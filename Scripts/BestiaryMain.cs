@@ -62,6 +62,9 @@ namespace BestiaryMod
         public static int SettingAnimationUpdateDelay { get; set; }
         public static bool SettingAnimate { get; set; }
         public static bool SettingEnableAllDirectionRotation { get; set; }
+        public static bool SettingsUseKey { get; set; }
+        public static bool SuppressHudMessages { get; set; }
+
         public static Color32 SettingFontColor { get; set; }
         public static Color32 SettingFontShadowColor { get; set; }
         public static Color32 SettingHeaderFontColor { get; set; }
@@ -349,7 +352,7 @@ namespace BestiaryMod
         {
             if (readyToOpenUI)
             {
-                if (InputManager.Instance.GetKeyDown(openMenuKeyCode) && !InputManager.Instance.IsPaused && GameManager.Instance.IsPlayerOnHUD)
+                if (SettingsUseKey && InputManager.Instance.GetKeyDown(openMenuKeyCode) && !InputManager.Instance.IsPaused && GameManager.Instance.IsPlayerOnHUD)
                 {
                     if (SettingEntries == 1 && killCounts.Count < 1)
                     {
@@ -357,7 +360,10 @@ namespace BestiaryMod
                         return;
                     }
                     if (AllText.Pages.Count < 1)
+                    {
+                        DaggerfallUI.AddHUDText("There are no written pages in the Bestiary.");
                         return;
+                    }
 
                     switch (SettingMenuUnlock)
                     {
@@ -420,8 +426,10 @@ namespace BestiaryMod
             SettingEntries = modSettings.GetValue<int>("Gameplay", "Entries");
             SettingSpawnItem = modSettings.GetBool("Gameplay", "ItemSpawning");
             SettingItemSpawningExtraChance = modSettings.GetInt("Gameplay", "ItemSpawningExtraChance");
+
             SettingDefaultRotation = modSettings.GetValue<int>("UserInterface", "DefaultMobOrientation");
             SettingAnimationUpdateDelay = modSettings.GetValue<int>("UserInterface", "DelayBetweenAnimationFrames");
+            SuppressHudMessages = modSettings.GetBool("UserInterface", "SuppressHudMessages");
             SettingAnimate = modSettings.GetBool("UserInterface", "EnableAnimations");
             SettingEnableAllDirectionRotation = modSettings.GetBool("UserInterface", "EnableEightDirectionRotation");
             SettingFontShadowColor = modSettings.GetColor("UserInterface", "FontShadowColor");
@@ -429,6 +437,7 @@ namespace BestiaryMod
             SettingFontColor = modSettings.GetColor("UserInterface", "FontColor");
             SettingHeaderFontColor = modSettings.GetColor("UserInterface", "HeaderFontColor");
 
+            SettingsUseKey = modSettings.GetValue<bool>("Controls", "UseKey");
             openMenuKeyCode = SetKeyFromText(modSettings.GetValue<string>("Controls", "Keybind"));
 
             InitializeUI();
@@ -467,7 +476,7 @@ namespace BestiaryMod
                 return;
 
             // Here we go. We don't need to count Humans
-            if (enemyEntity.MobileEnemy.Affinity == MobileAffinity.Human)
+            if (enemyEntity.MobileEnemy.Affinity == MobileAffinity.Human || HumanoidCheck(enemyEntity.MobileEnemy.ID))
                 return;
 
             if (entityBehaviour.GetComponent<EnemySenses>().Target == GameManager.Instance.PlayerEntityBehaviour)
@@ -480,7 +489,7 @@ namespace BestiaryMod
                 }
                 else
                 {
-                    if (SettingEntries == 1)
+                    if (!SuppressHudMessages && SettingEntries == 1)
                         DaggerfallUI.AddHUDText(string.Format(BestiaryTextDB.AddedToTheBestiary, mName));
 
                     killCounts.Add(mName, 1);

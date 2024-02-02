@@ -111,6 +111,7 @@
         "Assets/Game/Mods/Bestiary/BestiaryModData.csv",
         "Assets/Game/Mods/Bestiary/Scripts/BestiaryModCSVParser.cs"
     ],
+    "ModPreCompile": true,
     "Dependencies": [
         {
             "Name": "Unleveled Spells",

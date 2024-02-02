@@ -138,6 +138,13 @@
                     "Description": "Headers font shadow color in the book.",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ColorKey"
+                },
+                {
+                    "Value": true,
+                    "Name": "SuppressHudMessages",
+                    "Description": null,
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
                 }
             ],
             "$version": "v1"
@@ -147,6 +154,13 @@
             "Description": null,
             "IsAdvanced": false,
             "Keys": [
+                {
+                    "Value": false,
+                    "Name": "UseKey",
+                    "Description": null,
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.ToggleKey"
+                },
                 {
                     "Value": "B",
                     "Name": "Keybind",

@@ -336,7 +336,7 @@ namespace BestiaryMod
         {
             base.Update();
 
-            if (Input.GetKeyUp(KeyCode.Escape))
+            if (InputManager.Instance.GetBackButtonUp())
                 CloseWindow();
 
             if (!BestiaryMain.SettingAnimate || currentTexture == null)

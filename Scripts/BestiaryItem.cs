@@ -27,6 +27,12 @@ namespace BestiaryMod
 
         public override bool UseItem(ItemCollection collection)
         {
+            if (BestiaryMain.AllText.Pages.Count < 1)
+            {
+                DaggerfallUI.AddHUDText("There are no written pages in the Bestiary.");
+                return false;
+            }
+
             switch (BestiaryMain.SettingMenuUnlock)
             {
                 case 0:
